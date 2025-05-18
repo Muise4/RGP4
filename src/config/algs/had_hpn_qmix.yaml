@@ -1,0 +1,72 @@
+# --- QMIX specific parameters ---
+
+# use epsilon greedy action selector
+action_selector: "epsilon_greedy"
+epsilon_start: 1.0
+epsilon_finish: 0.05
+# epsilon_anneal_time: 100000 # 500000 for 6h_vs_8z
+epsilon_anneal_time: 500000
+
+runner: "parallel_twodec"
+batch_size_run: 8 # batch_size_run=4, buffer_size = 2500, batch_size=64  for 3s5z_vs_3s6z
+buffer_size: 5000 
+batch_size: 64
+
+t_max: 15050000
+breakpoint: 5000000
+# update the target network every {} episodes
+target_update_interval: 200
+
+# use the Q_Learner to train
+mac: "di_twodec_hpn_mac_hidden"
+# mac: "di_hpn_mac"
+
+agent: "had_hpn_agent"
+
+# connection
+att_heads: 4
+att_embed_dim: 16
+alpha: 0.5
+use_onehot_loss: True
+
+# hpn
+hpn_hyper_dim: 64
+hpn_hyper_activation: 'relu'
+
+# hpn_head_num: 1 # 2 for 3s_vs_5z and 6h_vs_8z
+hpn_head_num: 2
+agent_output_type: q
+
+learner: "di_twodec_hidden_learner"
+mixer: "qmix"
+mixing_embed_dim: 32
+hypernet_embed: 64
+lr: 0.001 # Learning rate for agents
+# td_lambda: 0.6 # 0.3 for 6h_vs_8z
+td_lambda: 0.3
+optimizer: 'adam'
+q_lambda: False
+
+
+name: "had_hpn_qmix"
+
+obs_agent_id: True # Include the agent's one_hot id in the observation
+obs_last_action: False # Include the agent's last action (one_hot) in the observation
+
+# Hypernetworks: "Hypernetworks"
+Hypernetworks: "attention"
+attention_mode: 1
+obs_att_state: True
+ues_KL: False
+# obs_att_state: False
+
+predict_epsilon: False
+model: 'models.Transformer' #Transfomer改成了MLP
+n_diffusion_steps: 10
+# mlp_mode: "mlp4"
+model: 'models.TemporalUnet' #现在Unet是Unet
+# n_diffusion_steps: 10
+
+use_hh_loss: True
+weight_hh_loss: 1
+use_diffusion_episode: True
